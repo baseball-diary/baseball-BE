@@ -1,4 +1,4 @@
-package baseball.baseballDiary.exception;
+package baseball.baseballDiary.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package baseball.baseballDiary.config;
+package baseball.baseballDiary.common.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

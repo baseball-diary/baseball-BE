@@ -1,4 +1,4 @@
-package baseball.baseballDiary.config;
+package baseball.baseballDiary.common.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;

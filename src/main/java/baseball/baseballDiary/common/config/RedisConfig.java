@@ -1,4 +1,4 @@
-package baseball.baseballDiary.config;
+package baseball.baseballDiary.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;

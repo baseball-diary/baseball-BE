@@ -1,4 +1,4 @@
-package baseball.baseballDiary.config;
+package baseball.baseballDiary.common.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
