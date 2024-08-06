@@ -1,4 +1,4 @@
-package baseball.baseballDiary.common.auth;
+package baseball.baseballDiary.auth;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

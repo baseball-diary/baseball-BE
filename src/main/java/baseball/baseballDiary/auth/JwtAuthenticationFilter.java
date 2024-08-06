@@ -1,6 +1,5 @@
-package baseball.baseballDiary.common.webfilter;
+package baseball.baseballDiary.auth;
 
-import baseball.baseballDiary.common.auth.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +20,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (accessToken != null) {
             // 토큰 값이 유효하면 검증
-            if (jwtProvider.validToken(accessToken)) {
+            if (jwtProvider.validateToken(accessToken)) {
                 // 토큰 검증 (인증객체 생성)
                 Authentication authentication = jwtProvider.getAuthentication(accessToken);
 

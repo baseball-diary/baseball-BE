@@ -1,7 +1,18 @@
-package baseball.baseballDiary.common.auth;
+package baseball.baseballDiary.auth;
 
+import io.jsonwebtoken.*;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+import java.util.Base64;
+import java.util.Date;
+
+@Component
 @RequiredArgsConstructor
 public class JwtProvider {
 
@@ -10,23 +21,26 @@ public class JwtProvider {
 
     // 어세스 토큰 유효시간 | 20m
     private final long accessTokenValidTime = 20 * 60 * 1000L;
-    // 리프레시 토큰 유효시간 | 1h
+    // 리프레시 토큰 유효시간 | 1Month
     private final long refreshTokenValidTime = 30L * 24 * 60 * 60 * 1000;
 
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
-    public MemberTokens generateLoginToken(String subject) {
+
+    // TokenDto 발급
+    public MemberTokenDto generateLoginToken(String subject) {
         String refreshToken = generateToken(subject, refreshTokenValidTime);
         String accessToken = generateToken(subject, accessTokenValidTime);
 
-        // 리프레스 토큰 저장
+        // Refresh 토큰 저장
         tokenRepository.save(new RefreshToken(refreshToken));
 
-        return new MemberTokens(refreshToken, accessToken);
+        return new MemberTokenDto(accessToken, refreshToken);
     }
 
+    // 토큰 생성
     public String generateToken(String subject, Long validTime) {
         Date now = new Date();
 
@@ -39,7 +53,8 @@ public class JwtProvider {
                 .compact();
     }
 
-    public boolean validToken(String token) {
+    // 토큰 유효성 검증
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secretKey)
@@ -47,10 +62,13 @@ public class JwtProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException | IllegalArgumentException e) {
+
+            // TODO: 예외처리
             return false;
         }
     }
 
+    // 사용자 정보 추출
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
