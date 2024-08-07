@@ -1,3 +1,4 @@
+/*
 package baseball.baseballDiary.common.config;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -31,3 +32,4 @@ public class S3Config {
                 .build();
     }
 }
+*/

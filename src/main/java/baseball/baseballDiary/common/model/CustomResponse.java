@@ -1,10 +1,10 @@
 package baseball.baseballDiary.common.model;
 
 import baseball.baseballDiary.common.constants.ApiState;
-import baseball.baseballDiary.common.exception.BaseAuthenticationException;
 import baseball.baseballDiary.common.exception.BaseValidateException;
 import baseball.baseballDiary.common.exception.CommonLogicException;
 import baseball.baseballDiary.common.utils.LocalDateUtil;
+import baseball.baseballDiary.common.exception.BaseAuthenticationException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;

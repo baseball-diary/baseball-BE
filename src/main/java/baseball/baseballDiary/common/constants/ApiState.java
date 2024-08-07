@@ -18,6 +18,8 @@ public enum ApiState {
     ACCESS_EXPIRED(903,"error.903"),
     IP_ERROR(904,"error.904"),
 
+    AUTH_SNS(907,"error.907"),
+
     OTHER(999,"error.999");
 
     private Integer code;

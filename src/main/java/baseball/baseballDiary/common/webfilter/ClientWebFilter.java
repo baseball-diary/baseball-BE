@@ -25,7 +25,8 @@ public class ClientWebFilter extends PathPatternWebFilter {
         this.clientId = baseProperty.getClientId();
         this.exceptionHandlerUtil = exceptionHandlerUtil;
 
-        this.addIncludePathPatterns("/*/baseball-diary/api/**");
+        //this.addIncludePathPatterns("/*/baseball-diary/api/**");
+        this.addIncludePathPatterns("/*/back_login/api/v1/**");
         this.addExcludePathPatterns(
                 "/",
                 "/css/**",

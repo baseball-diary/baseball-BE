@@ -13,10 +13,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import static baseball.baseballDiary.common.utils.LocalDateUtil.ZONE_KST;
-import static baseball.baseballDiary.common.utils.LocalDateUtil.ZONE_UTC;
-import static baseball.baseballDiary.common.utils.ValidateUtils.isValidDate;
-
 public class DateUtils {
 
     private static final String format_6 = "yyyy-MM-dd";
@@ -341,7 +337,7 @@ public class DateUtils {
         }
         Date parseDate = parse(date);
         LocalDateTime localDateTime = DateUtils.asLocalDateTime(parseDate);
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZONE_KST).withZoneSameInstant(ZONE_UTC);
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, LocalDateUtil.ZONE_KST).withZoneSameInstant(LocalDateUtil.ZONE_UTC);
         LocalDateTime localDateTime1 = zonedDateTime.toLocalDateTime();
         return localDateTime1;
     }
@@ -351,7 +347,7 @@ public class DateUtils {
             return null;
         }
         // 날짜 포맷 검증
-        isValidDate(date, CommonEnums.Date.DATE.getPattern());
+        ValidateUtils.isValidDate(date, CommonEnums.Date.DATE.getPattern());
         // StringBuilder를 사용한 문자열 결합
         return date + (isStart ? " 00:00:00" : " 23:59:59");
     }
