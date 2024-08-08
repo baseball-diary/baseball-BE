@@ -1,6 +1,7 @@
 package baseball.baseballDiary.auth;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 
@@ -16,18 +19,20 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtProvider {
 
-    private String secretKey = "tokensecretkeytokensecretkeytokensecretkeytokensecretkeytokensecretkey";
+    private String secret = "tokensecretkeytokensecretkeytokensecretkeytokensecretkeytokensecretkey";
+    private SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     private final TokenRepository tokenRepository;
+    private final CustomDetailService customDetailService;
 
     // 어세스 토큰 유효시간 | 20m
     private final long accessTokenValidTime = 20 * 60 * 1000L;
     // 리프레시 토큰 유효시간 | 1Month
     private final long refreshTokenValidTime = 30L * 24 * 60 * 60 * 1000;
 
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
+//    @PostConstruct
+//    protected void init() {
+//        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+//    }
 
     // TokenDto 발급
     public MemberTokenDto generateLoginToken(String subject) {
@@ -49,7 +54,7 @@ public class JwtProvider {
                 .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + validTime))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -62,7 +67,6 @@ public class JwtProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException | IllegalArgumentException e) {
-
             // TODO: 예외처리
             return false;
         }
@@ -70,13 +74,15 @@ public class JwtProvider {
 
     // 사용자 정보 추출
     public Authentication getAuthentication(String token) {
+
+        // JWT 에서 Claim 추출
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        UserDetails userDetails = principalService.loadUserByUsername(claims.getSubject());
+        UserDetails userDetails = customDetailService.loadUserByUsername(claims.getSubject());
 
         return new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
     }
@@ -91,21 +97,5 @@ public class JwtProvider {
         if(request.getHeader("refreshToken") != null )
             return request.getHeader("refreshToken").substring(7);
         return null;
-    }
-
-    // RefreshToken 존재유무 확인
-    public boolean existsRefreshToken(String refreshToken) {
-        return tokenRepository.existsByRefreshToken(refreshToken);
-    }
-
-    // 토큰에서 회원 정보 추출
-    public String getUserEmail(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
     }
 }
