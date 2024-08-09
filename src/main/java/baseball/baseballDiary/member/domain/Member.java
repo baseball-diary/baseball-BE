@@ -1,6 +1,5 @@
 package baseball.baseballDiary.member.domain;
 
-import baseball.baseballDiary.auth.BaseTimeEntity;
 import baseball.baseballDiary.member.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
