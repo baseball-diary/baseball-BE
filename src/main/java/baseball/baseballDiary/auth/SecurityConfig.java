@@ -41,8 +41,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login((oauth) ->
                         oauth
-                                .defaultSuccessUrl("/")
-                                .userInfoEndpoint((userinfo) -> userinfo.userService(principalOauthUserService)) // 로그인 성공 이후 처리
+                                .userInfoEndpoint((userinfo) -> userinfo.userService(customOauthUserService)) // 로그인 성공 이후 처리
                                 .successHandler(authSuccessHandler)
                 );
         return http.build();

@@ -1,4 +1,4 @@
-package baseball.baseballDiary.auth;
+package baseball.baseballDiary.auth.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
