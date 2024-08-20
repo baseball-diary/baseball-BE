@@ -1,5 +1,8 @@
-package baseball.baseballDiary.auth;
+package baseball.baseballDiary.auth.token;
 
+import baseball.baseballDiary.auth.domain.RefreshToken;
+import baseball.baseballDiary.auth.TokenRepository;
+import baseball.baseballDiary.auth.dto.MemberTokenDto;
 import baseball.baseballDiary.auth.service.CustomDetailService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -28,12 +31,8 @@ public class JwtProvider {
     // 리프레시 토큰 유효시간 | 1Month
     private final long refreshTokenValidTime = 30L * 24 * 60 * 60 * 1000;
 
-//    @PostConstruct
-//    protected void init() {
-//        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-//    }
 
-    // TokenDto 발급
+    // Token 발급
     public MemberTokenDto generateLoginToken(String subject) {
         String refreshToken = generateToken(subject, refreshTokenValidTime);
         String accessToken = generateToken(subject, accessTokenValidTime);

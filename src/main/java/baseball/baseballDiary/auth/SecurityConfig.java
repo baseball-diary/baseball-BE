@@ -1,5 +1,6 @@
 package baseball.baseballDiary.auth;
 
+import baseball.baseballDiary.auth.service.CustomOauthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomOauthUserService customOauthUserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -42,7 +44,7 @@ public class SecurityConfig {
                 .oauth2Login((oauth) ->
                         oauth
                                 .userInfoEndpoint((userinfo) -> userinfo.userService(customOauthUserService)) // 로그인 성공 이후 처리
-                                .successHandler(authSuccessHandler)
+                                .successHandler(authSuccessHandler) // JWT 발급 진행
                 );
         return http.build();
     }

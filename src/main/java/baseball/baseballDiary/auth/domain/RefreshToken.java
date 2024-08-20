@@ -1,4 +1,4 @@
-package baseball.baseballDiary.auth;
+package baseball.baseballDiary.auth.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

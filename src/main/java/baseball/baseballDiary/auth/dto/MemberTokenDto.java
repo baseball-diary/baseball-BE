@@ -1,4 +1,4 @@
-package baseball.baseballDiary.auth;
+package baseball.baseballDiary.auth.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

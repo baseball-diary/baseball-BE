@@ -1,5 +1,6 @@
 package baseball.baseballDiary.auth.service;
 
+import baseball.baseballDiary.auth.domain.PrincipalDetails;
 import baseball.baseballDiary.auth.info.GoogleOAuth2UserInfo;
 import baseball.baseballDiary.auth.info.OAuth2UserInfo;
 import baseball.baseballDiary.member.domain.Member;
@@ -21,13 +22,14 @@ public class CustomOauthUserService extends DefaultOAuth2UserService {
     private final MemberRepository memberRepository;
 
     @Override
-    public OAuth2User loaduser(OAuth2UserRequest userRequest){
+    public OAuth2User loadUser(OAuth2UserRequest userRequest){
+
+        // Oauth2 Provider 로 부터 사용자의 정보를 받아옴
         OAuth2User oAuth2User = super.loadUser(userRequest);
         OAuth2UserInfo oAuth2UserInfo = getUserInfo(userRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
 
         // 현재 정보 가져오기
-        Optional<Member> member = memberRepository.findByName(oAuth2UserInfo.getName());
-
+        Optional<Member> member = memberRepository.findByNickname(oAuth2UserInfo.getName());
 
         if (member.isEmpty()) { // DB 에 없는 사용자라면 회원 가입 처리
             Member newMember = Member.builder()
@@ -36,9 +38,9 @@ public class CustomOauthUserService extends DefaultOAuth2UserService {
                     .build();
 
             memberRepository.save(newMember);
-            return new PrincipalDetails(user, oAuth2User.getAttributes());
+            return new PrincipalDetails(newMember, oAuth2User.getAttributes());
         }else{ // DB 에 있는 사용자라면 변경된 정보 업데이트
-            return new PrincipalDetails(userEntity.get(), oAuth2User.getAttributes());
+            return new PrincipalDetails(member.get(), oAuth2User.getAttributes());
         }
     }
 
