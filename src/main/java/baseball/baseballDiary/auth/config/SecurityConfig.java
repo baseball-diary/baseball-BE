@@ -1,5 +1,7 @@
-package baseball.baseballDiary.auth;
+package baseball.baseballDiary.auth.config;
 
+import baseball.baseballDiary.auth.filter.JwtAuthenticationFilter;
+import baseball.baseballDiary.auth.handler.OAuthSuccessHandler;
 import baseball.baseballDiary.auth.service.CustomOauthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomOauthUserService customOauthUserService;
+    private final OAuthSuccessHandler oAuthSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -34,17 +37,18 @@ public class SecurityConfig {
                 ))
                 .formLogin(AbstractHttpConfigurer::disable)  // form 로그인 해제
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout((logoutConfig) ->
-                        logoutConfig
-                                .logoutUrl("/logout")
-                                .logoutSuccessHandler(((request, response, authentication) ->
-                                        response.setStatus(200)
-                                ))
-                )
+//                .logout((logoutConfig) ->
+//                        logoutConfig
+//                                .logoutUrl("/logout")
+//                                .logoutSuccessHandler(((request, response, authentication) ->
+//                                        response.setStatus(200)
+//                                ))
+//                )
+                // 기본 url : /oauth2/authorization/{registrationId}
                 .oauth2Login((oauth) ->
                         oauth
                                 .userInfoEndpoint((userinfo) -> userinfo.userService(customOauthUserService)) // 로그인 성공 이후 처리
-                                .successHandler(authSuccessHandler) // JWT 발급 진행
+                                .successHandler(oAuthSuccessHandler) // JWT 발급 진행
                 );
         return http.build();
     }

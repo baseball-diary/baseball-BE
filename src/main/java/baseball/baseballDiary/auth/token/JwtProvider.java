@@ -1,7 +1,7 @@
 package baseball.baseballDiary.auth.token;
 
 import baseball.baseballDiary.auth.domain.RefreshToken;
-import baseball.baseballDiary.auth.TokenRepository;
+import baseball.baseballDiary.auth.repository.TokenRepository;
 import baseball.baseballDiary.auth.dto.MemberTokenDto;
 import baseball.baseballDiary.auth.service.CustomDetailService;
 import io.jsonwebtoken.*;

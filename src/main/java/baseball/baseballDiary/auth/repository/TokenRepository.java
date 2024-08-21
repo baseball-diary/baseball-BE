@@ -1,4 +1,4 @@
-package baseball.baseballDiary.auth;
+package baseball.baseballDiary.auth.repository;
 
 import baseball.baseballDiary.auth.domain.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;

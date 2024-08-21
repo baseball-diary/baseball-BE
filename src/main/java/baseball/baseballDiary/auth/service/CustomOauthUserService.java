@@ -39,7 +39,7 @@ public class CustomOauthUserService extends DefaultOAuth2UserService {
 
             memberRepository.save(newMember);
             return new PrincipalDetails(newMember, oAuth2User.getAttributes());
-        }else{ // DB 에 있는 사용자라면 변경된 정보 업데이트
+        }else{ // DB 에 있는 사용자라면 정보 반환
             return new PrincipalDetails(member.get(), oAuth2User.getAttributes());
         }
     }

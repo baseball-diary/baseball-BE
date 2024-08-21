@@ -1,4 +1,4 @@
-package baseball.baseballDiary.auth;
+package baseball.baseballDiary.auth.filter;
 
 import baseball.baseballDiary.auth.token.JwtProvider;
 import jakarta.servlet.FilterChain;
@@ -34,7 +34,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }else{
                 // accessToken 값 만료
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "AccessToken Expired");
+                // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "AccessToken Expired");
+                // TODO : 에러처리
             }
         }
 
