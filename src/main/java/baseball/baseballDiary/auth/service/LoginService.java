@@ -27,10 +27,10 @@ public class LoginService {
     public SocialMemberDto socialLogin(String code, String registrationId) {
 
         // 토큰 발급
-        String accessToken = getAccessToken(code, registrationId);
+        String accessToken = getAccessToken(code);
 
         // 토큰 이용해서 유저 정보 발급
-        JsonNode userResourceNode = getUserResource(accessToken, registrationId);
+        JsonNode userResourceNode = getUserResource(accessToken);
 
         if (registrationId.equals("naver")) {
             userResourceNode = userResourceNode.get("response");
@@ -43,24 +43,24 @@ public class LoginService {
         return socialUser(nickname);
     }
 
-    private String getAccessToken(String authorizationCode, String registrationId) {
+    private String getAccessToken(String authorizationCode) {
         return webClient.post()
-                .uri(socialLoginProperties.getGoogle().get("token-uri"))
+                .uri(socialLoginProperties.getGoogle().tokenUri())  // token-uri 값 사용
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .body(BodyInserters.fromFormData("code", authorizationCode)
-                        .with("client_id", socialLoginProperties.getGoogle().get("client-id"))
-                        .with("client_secret", socialLoginProperties.getGoogle().get("client-secret"))
-                        .with("redirect_uri", socialLoginProperties.getGoogle().get("redirect-uri"))
-                        .with("grant_type", "authorization_code"))
+                        .with("client_id", socialLoginProperties.getGoogle().clientId())  // client-id 값 사용
+                        .with("client_secret", socialLoginProperties.getGoogle().clientSecret())  // client-secret 값 사용
+                        .with("redirect_uri", socialLoginProperties.getGoogle().redirectUri())  // redirect-uri 값 사용
+                        .with("grant_type", "authorization_code"))  // grant_type 값은 고정
                 .retrieve()
                 .bodyToMono(JsonNode.class)
                 .map(responseNode -> responseNode.get("access_token").asText())
                 .block();
     }
 
-    private JsonNode getUserResource(String accessToken, String registrationId) {
+    private JsonNode getUserResource(String accessToken) {
         return webClient.get()
-                .uri(socialLoginProperties.getGoogle().get("resource-uri"))
+                .uri(socialLoginProperties.getGoogle().resourceUri())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
                 .bodyToMono(JsonNode.class)
