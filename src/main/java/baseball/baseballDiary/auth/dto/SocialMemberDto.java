@@ -12,4 +12,8 @@ public class SocialMemberDto {
     private MemberTokenDto token;
     private String role;
     private String nickname;
+
+    public SocialMemberDto(MemberTokenDto token) {
+        this.token = token;
+    }
 }

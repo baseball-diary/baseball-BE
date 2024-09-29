@@ -11,20 +11,9 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "auth.client.registration")
 @Getter
 public class SocialLoginProperties {
+    private Map<String, SocialProvider> providers;
 
-    private Google google;
-
-    // Getter and Setter for google
-    public Google getGoogle() {
-        return google;
-    }
-
-    public void setGoogle(Google google) {
-        this.google = google;
-    }
-
-    // Google record
-    public static record Google(
+    public static record SocialProvider(
             String clientId,
             String clientSecret,
             String redirectUri,
