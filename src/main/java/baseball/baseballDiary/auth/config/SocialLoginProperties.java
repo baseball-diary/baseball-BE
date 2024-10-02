@@ -12,14 +12,5 @@ import java.util.Map;
 @Getter
 public class SocialLoginProperties {
     private Map<String, SocialProvider> providers;
-
-    public static record SocialProvider(
-            String clientId,
-            String clientSecret,
-            String redirectUri,
-            String tokenUri,
-            String resourceUri,
-            String authorizationGrantType,
-            List<String> scope
-    ) {}
 }
+

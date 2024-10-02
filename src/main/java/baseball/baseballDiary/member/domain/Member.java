@@ -21,7 +21,7 @@ public class Member extends BaseTimeEntity {
     @Column(name = "member_id", updatable = false)
     private UUID id;
 
-    private String nickname;
+    private String email;
     private String age;
     private Gender gender;
     private String image_path;
@@ -29,8 +29,8 @@ public class Member extends BaseTimeEntity {
     private boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Member(String nickname, String age, Gender gender, String image_path) {
-        this.nickname = nickname;
+    public Member(String email, String age, Gender gender, String image_path) {
+        this.email = email;
         this.age = age;
         this.gender = gender;
         this.image_path = image_path;

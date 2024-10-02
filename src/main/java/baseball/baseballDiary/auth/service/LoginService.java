@@ -1,6 +1,7 @@
 package baseball.baseballDiary.auth.service;
 
 import baseball.baseballDiary.auth.config.SocialLoginProperties;
+import baseball.baseballDiary.auth.config.SocialProvider;
 import baseball.baseballDiary.auth.dto.SocialMemberDto;
 import baseball.baseballDiary.auth.token.JwtProvider;
 import baseball.baseballDiary.member.domain.Member;
@@ -27,7 +28,7 @@ public class LoginService {
     public SocialMemberDto socialLogin(String code, String registrationId) {
 
         // registartionId 에 맞는 설정값 가져옴
-        SocialLoginProperties.SocialProvider provider = socialLoginProperties.getProviders().get(registrationId);
+        SocialProvider provider = socialLoginProperties.getProviders().get(registrationId);
 
         // 토큰 발급
         String accessToken = getAccessToken(code, provider);
@@ -43,10 +44,10 @@ public class LoginService {
         String nickname = registrationId + "_" + userResourceNode.get("name").asText();
 
         // JWT 토큰 반환
-        return socialUser(nickname);
+        return socialUser(email);
     }
 
-    private String getAccessToken(String authorizationCode, SocialLoginProperties.SocialProvider provider) {
+    private String getAccessToken(String authorizationCode, SocialProvider provider) {
         return webClient.post()
                 .uri(provider.tokenUri())  // token-uri 값 사용
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -61,7 +62,7 @@ public class LoginService {
                 .block();
     }
 
-    private JsonNode getUserResource(String accessToken, SocialLoginProperties.SocialProvider provider) {
+    private JsonNode getUserResource(String accessToken, SocialProvider provider) {
         return webClient.get()
                 .uri(provider.resourceUri())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
@@ -70,13 +71,13 @@ public class LoginService {
                 .block();
     }
 
-    private SocialMemberDto socialUser(String nickname) {
-        return memberRepository.findByNickname(nickname)  // 닉네임으로 사용자 검색
-                .map(member -> new SocialMemberDto(jwtProvider.generateLoginToken(member.getNickname())))  // 존재하는 경우, 토큰 생성 후 반환
+    private SocialMemberDto socialUser(String email) {
+        return memberRepository.findByEmail(email)  // 닉네임으로 사용자 검색
+                .map(member -> new SocialMemberDto(jwtProvider.generateLoginToken(member.getEmail())))  // 존재하는 경우, 토큰 생성 후 반환
                 .orElseGet(() -> {  // 사용자가 없으면 새 멤버 생성
-                    Member newMember = Member.builder().nickname(nickname).build();
+                    Member newMember = Member.builder().email(email).build();
                     memberRepository.save(newMember);  // DB에 저장
-                    return new SocialMemberDto(jwtProvider.generateLoginToken(newMember.getNickname()));
+                    return new SocialMemberDto(jwtProvider.generateLoginToken(newMember.getEmail()));
                 });
     }
 
