@@ -38,7 +38,7 @@ public class JwtProvider {
         String accessToken = generateToken(subject, accessTokenValidTime);
 
         // Refresh 토큰 저장
-        tokenRepository.save(new RefreshToken(refreshToken));
+        // tokenRepository.save(new RefreshToken(refreshToken));
 
         return new MemberTokenDto(accessToken, refreshToken);
     }
