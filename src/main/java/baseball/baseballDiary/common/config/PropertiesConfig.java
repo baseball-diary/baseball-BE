@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class PropertiesConfig {
 
     @Bean(name = "baseballDiaryProperty")
-    @ConfigurationProperties(prefix = "baseball")
+    @ConfigurationProperties(prefix = "baseball.jwt")
     public BaseProperty getGroupwareProperty() {
         return new BaseProperty();
     }

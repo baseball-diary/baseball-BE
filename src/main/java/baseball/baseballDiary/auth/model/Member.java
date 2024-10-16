@@ -1,24 +1,28 @@
 package baseball.baseballDiary.auth.model;
 
 import baseball.baseballDiary.auth.enums.Gender;
+import baseball.baseballDiary.auth.enums.SocialType;
 import baseball.baseballDiary.common.model.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
+@Entity
 public class Member extends BaseTimeEntity {
 
     @Id
-    private String memberCd;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "BINARY(16)", name = "member_cd")
+    private UUID memberCd;
 
+    @Column(name = "nick_name")
     private String nickname;
 
     private String email;
@@ -28,11 +32,13 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private String imagePath;
-
+    @Column(name = "is_use")
     private boolean isUse = true;
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
-    private Social social;
+    @Column(name = "is_existed")
+    private boolean isExisted = false;
+
+    @Column(name = "image_path")
+    private String imagePath;
 
 }

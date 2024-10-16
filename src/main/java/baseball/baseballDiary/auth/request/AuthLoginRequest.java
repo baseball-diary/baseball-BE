@@ -5,15 +5,10 @@ import baseball.baseballDiary.auth.conf.AuthConfig;
 import baseball.baseballDiary.auth.conf.AuthSource;
 import baseball.baseballDiary.auth.utils.HttpClientUtil;
 import baseball.baseballDiary.auth.utils.UrlBuilder;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
 import java.util.Map;

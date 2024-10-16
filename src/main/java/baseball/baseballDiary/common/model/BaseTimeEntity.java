@@ -1,5 +1,6 @@
 package baseball.baseballDiary.common.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -15,8 +16,10 @@ import java.time.LocalDateTime;
 public abstract class BaseTimeEntity {
 
     @CreatedDate
-    private LocalDateTime regDt;
+    @Column(name = "reg_dt")
+    private LocalDateTime regDt = LocalDateTime.now();
 
     @LastModifiedDate
+    @Column(name = "upd_dt")
     private LocalDateTime updDt = null;
 }

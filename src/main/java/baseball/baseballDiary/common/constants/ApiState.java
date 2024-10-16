@@ -19,6 +19,8 @@ public enum ApiState {
     IP_ERROR(904,"error.904"),
 
     AUTH_SNS(907,"error.907"),
+    ACCESS_REFRESH(908,"error.908"),
+    ACCESS_REFRESH_ERROR(909,"error.909"),
 
     OTHER(999,"error.999");
 

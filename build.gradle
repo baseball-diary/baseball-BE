@@ -61,7 +61,13 @@ dependencies {
 
 	implementation 'com.google.code.gson:gson:2.9.0'
 
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	// jjwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'  // JSON 파싱용 Jackson
+
+	// JAXB (Java XML Binding)
+	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 }
 
 tasks.named('test') {
